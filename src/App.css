@@ -1,5 +1,16 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
 .App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* ทำให้ App ครอบคลุมพื้นที่ทั้งหมดของ viewport */
   text-align: center;
+  background-color: #ddf2f0;
 }
 
 .App-logo {
@@ -15,7 +26,7 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  min-height: 100vh; /* ใช้ความสูงทั้งหมดของ viewport */
   display: flex;
   flex-direction: column;
   align-items: center;
