@@ -2,9 +2,8 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
-// การตั้งค่า i18next
 i18n
-  .use(initReactI18next) // เชื่อมต่อกับ react-i18next
+  .use(initReactI18next) 
   .init({
     resources: {
       th: {
@@ -46,7 +45,7 @@ i18n
         translation: {
           "loading": "Loading...",
           "error": "Error: {{message}}",
-          "select_district": "Select District Here!",
+          "select_district": "Select District!",
           "change_units": "Change to {{unit}}",
           "weather": "Weather in {{city}}, {{country}}",
           "wind": "Wind Speed:",
@@ -78,10 +77,10 @@ i18n
         }
       }
     },
-    lng: "th", // ภาษาเริ่มต้น
-    fallbackLng: "en", // ภาษา fallback ถ้าไม่พบการแปล
+    lng: "th", 
+    fallbackLng: "en", 
     interpolation: {
-      escapeValue: false // react ไม่ต้อง escape value
+      escapeValue: false 
     }
   });
 

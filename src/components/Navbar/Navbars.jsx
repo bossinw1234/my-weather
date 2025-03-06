@@ -4,6 +4,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import "./Nbar.css";
 
+
 function Nbar() {
   const [language, setLanguage] = useState("th");
 
@@ -13,17 +14,23 @@ function Nbar() {
 
   return (
     <Navbar expand="lg" className="custom-navbar">
-      <Container className="d-flex align-items-center justify-content-center">
+      <Container className="d-flex justify-content-between">
         <Navbar.Brand href="#home" className="text-white fw-bold">
           {language === "th"
             ? "อากาศเชียงใหม่วันนี้"
             : "Chiang Mai Weather Today"}
         </Navbar.Brand>
 
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Toggle aria-controls="basic-navbar-nav">
+          <img
+            src="/weather.ico"
+            alt="Weather icon"
+            style={{ width: "30px", height: "30px" }}
+          />
+        </Navbar.Toggle>
 
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav>
+          <Nav className="ms-auto gap-3">
             <Nav.Link href="#home" className="nav-link">
               {language === "th" ? "หน้าหลัก" : "Home"}
             </Nav.Link>
@@ -38,7 +45,6 @@ function Nbar() {
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
-        
       </Container>
     </Navbar>
   );
