@@ -1,6 +1,6 @@
 import React from 'react';
-import WeatherWidget from './WeatherWidget';
-import Nbar from './components/Navbars'
+import WeatherWidget from './components/WeatherWidget';
+import Nbar from './components/Navbar/Navbars'
 import './App.css';
 function App() {
   return (

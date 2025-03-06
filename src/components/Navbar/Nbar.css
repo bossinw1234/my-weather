@@ -1,0 +1,14 @@
+.custom-navbar {
+    background-color: rgb(52, 206, 226) !important;
+  }
+  .custom-navbar .nav-link {
+    color: white !important;
+    font-family: "Mitr", sans-serif;
+  }
+
+  .globe-icon {
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
