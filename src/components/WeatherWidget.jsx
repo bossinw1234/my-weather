@@ -46,7 +46,6 @@ const WeatherWidget = () => {
         response.ok ? response.json() : Promise.reject(response.statusText)
       )
       .then((data) => {
-        console.log("API Response:", data);
         setWeatherData(data);
         setLoading(false);
       })
