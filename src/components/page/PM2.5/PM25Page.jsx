@@ -1,10 +1,20 @@
-import { col } from "framer-motion/client";
 import React, { useEffect, useState } from "react";
+import { useRef } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faAngleLeft,
+  faAngleRight,
+  faEllipsis,
+} from "@fortawesome/free-solid-svg-icons";
+import { Modal, Button } from "react-bootstrap";
+import "./PM25Page.css";
 
 const PM25Page = () => {
   const [pm25Data, setPm25Data] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const scrollRef = useRef(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const fetchPM25Data = async () => {
@@ -30,11 +40,27 @@ const PM25Page = () => {
     fetchPM25Data();
   }, []);
 
+  const scrollLeft = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollLeft -= 200;
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollLeft += 200;
+    }
+  };
+
   const getAqiStatus = (aqi) => {
-    if (aqi <= 50) return { text: "ดีมาก", color: "bg-green-500" };
-    if (aqi <= 100) return { text: "ปานกลาง", color: "bg-yellow-500" };
-    if (aqi <= 150) return { text: "มีผลต่อสุขภาพ", color: "bg-orange-500" };
-    return { text: "อันตราย", color: "bg-red-500" };
+    if (aqi <= 50) return { text: "ดีมาก", textColor: "#2F855A" }; // สีข้อความ #2F855A สำหรับ Green
+    if (aqi <= 100) return { text: "ปานกลาง", textColor: "#D69E2E" }; // สีข้อความ #D69E2E สำหรับ Yellow
+    if (aqi <= 150)
+      return {
+        text: "มีผลต่อสุขภาพ",
+        textColor: "#DD6B20",
+      }; // สีข้อความ #DD6B20 สำหรับ Orange
+    return { text: "อันตราย", textColor: "#C53030" }; // สีข้อความ #C53030 สำหรับ Red
   };
 
   if (loading) {
@@ -51,6 +77,28 @@ const PM25Page = () => {
         <h1 className="text-4xl font-bold text-gray-800 mb-4">
           🏔️ คุณภาพอากาศเชียงใหม่
         </h1>
+        <Modal
+          show={showModal}
+          onHide={() => setShowModal(false)}
+          size="md"
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>🗒️ มาตรวัดคุณภาพอากาศ</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="grid grid-cols-2 gap-4">
+              <ScaleItem color="bg-green-500" range="0-50" label="ดี" />
+              <ScaleItem color="bg-yellow-500" range="51-100" label="ปานกลาง" />
+              <ScaleItem
+                color="bg-orange-500"
+                range="101-150"
+                label="มีผลต่อสุขภาพ"
+              />
+              <ScaleItem color="bg-red-500" range="151+" label="อันตราย" />
+            </div>
+          </Modal.Body>
+        </Modal>
       </div>
 
       {/* Current AQI Table */}
@@ -58,15 +106,27 @@ const PM25Page = () => {
         <div
           className="card rounded-lg max-w-4xl mx-auto mb-16 col-4"
           style={{
-            backgroundColor: "#8cddee",
+            backgroundColor: "#e6fcff",
             fontFamily: "Mitr, sans-serif",
           }}
         >
-          <h2 className="text-2xl font-semibold text-gray-700 mb-4 text-center">
-            ข้อมูลปัจจุบัน
-          </h2>
+          <div className="row">
+            <div className="col-6">
+              <h2 className="text-2xl font-semibold text-gray-700 my-4 text-start px-4">
+                ข้อมูลปัจจุบัน
+              </h2>
+            </div>
+            <div className="col-6 my-4 text-end px-4">
+              <Button
+                variant="outline-secondary"
+                onClick={() => setShowModal(true)}
+              >
+                <FontAwesomeIcon icon={faEllipsis} />
+              </Button>
+            </div>
+          </div>
           <div>
-            <div className="space-y-4 text-gray-600 mb-6">
+            <div className="space-y-4 text-gray-600 mb-4">
               <p>
                 📍 <strong>สถานีตรวจวัด:</strong>{" "}
                 <span className="font-medium">{pm25Data.data.city.name}</span>
@@ -85,14 +145,22 @@ const PM25Page = () => {
                   {pm25Data.data.aqi}
                 </span>
 
-                <p className="mt-4 text-lg font-medium text-gray-700">
-                  {getAqiStatus(pm25Data.data.aqi).text}
-                </p>
+                <div className="d-flex align-items-center justify-content-center gap-2 text-center mt-2 ">
+                  <span className="fs-5">ดัชนีคุณภาพอากาศ :</span>
+                  <div
+                    className={` ${
+                      getAqiStatus(pm25Data.data.aqi).color
+                    }`}
+                    style={{ color: getAqiStatus(pm25Data.data.aqi).textColor }}
+                  >
+                    <span className="fs-5">{getAqiStatus(pm25Data.data.aqi).text}</span>
+                  </div>
+                </div>
               </div>
             </div>
 
             {/* PM Data Table */}
-            <div>
+            <div className="my-5">
               <table className="mx-auto border-collapse border border-gray-300 bg-[#8cddee]">
                 <thead className="bg-[#74c1d8]">
                   <tr className="border-b-2 border-gray-300">
@@ -136,23 +204,34 @@ const PM25Page = () => {
         </div>
       )}
 
+      <h2 className="text-2xl font-bold text-gray-800 mb-6 text-start">
+        📅 พยากรณ์ 7 วันข้างหน้า
+      </h2>
       {pm25Data?.data?.forecast && (
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6 text-start">
-            📅 พยากรณ์ 7 วันข้างหน้า
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="d-flex justify-content-center align-items-center position-relative">
+          {/* ปุ่มเลื่อนซ้าย */}
+          <button className="btn btn-dark me-2" onClick={scrollLeft}>
+            <FontAwesomeIcon icon={faAngleLeft} />
+          </button>
+
+          {/* ส่วนที่เลื่อนได้ */}
+          <div
+            ref={scrollRef}
+            className="d-flex overflow-hidden col-8 col-md-6"
+            style={{ scrollBehavior: "smooth" }}
+          >
             {pm25Data.data.forecast.daily.pm25.map((day, index) => {
               const aqiStatus = getAqiStatus(day.avg);
               return (
                 <div
                   key={index}
-                  className={`relative rounded-xl p-6 shadow-lg transform hover:scale-105 transition-all duration-300 ${aqiStatus.color}`}
+                  className={`card ${aqiStatus.color} m-2`}
+                  style={{ minWidth: "200px" }}
                 >
-                  <h3 className="text-lg font-semibold text-white mb-3 text-center">
+                  <h3 className="card-header mb-3 text-center">
                     {formatDate(day.day)}
                   </h3>
-                  <div className="bg-white rounded-lg p-4 shadow-md text-center">
+                  <div className="card-body text-center">
                     <MetricItem label="ค่าเฉลี่ย" value={`${day.avg} µg/m³`} />
                     <MetricItem label="สูงสุด" value={`${day.max} µg/m³`} />
                     <MetricItem label="ต่ำสุด" value={`${day.min} µg/m³`} />
@@ -161,27 +240,16 @@ const PM25Page = () => {
               );
             })}
           </div>
+
+          {/* ปุ่มเลื่อนขวา */}
+          <button className="btn btn-dark ms-2" onClick={scrollRight}>
+            <FontAwesomeIcon icon={faAngleRight} />
+          </button>
         </div>
       )}
-
-      {/* AQI Scale Legend */}
-      <div className="max-w-4xl mx-auto mt-12 p-6 bg-white rounded-xl shadow">
-        <h3 className="text-xl font-semibold mb-4">🗒️ มาตรวัดคุณภาพอากาศ</h3>
-        <div className="flex flex-col space-y-3">
-          <ScaleItem color="bg-green-500" range="0-50" label="ดี" />
-          <ScaleItem color="bg-yellow-500" range="51-100" label="ปานกลาง" />
-          <ScaleItem
-            color="bg-orange-500"
-            range="101-150"
-            label="มีผลต่อสุขภาพ"
-          />
-          <ScaleItem color="bg-red-500" range="151+" label="อันตราย" />
-        </div>
-      </div>
     </div>
   );
 };
-
 
 const MetricItem = ({ label, value }) => (
   <div className="flex justify-between items-center">
