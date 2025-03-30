@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import WeatherWidget from "./components/WeatherWidget";
 import Nbar from "./components/Navbar/Navbars";
 import PM25Page from "./components/page/PM2.5/PM25Page";
+import ChiangMaiMap from "./components/page/ChiangMaiMap/ChiangMaiMap.jsx";
 import "./App.css";
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
         <Routes> 
           <Route path="/" element={<WeatherWidget />} />
           <Route path="/pm25" element={<PM25Page />} />
+          <Route path="/map" element={<ChiangMaiMap />} />
         </Routes>
         <div className="rain-container"></div>
       </div>
