@@ -114,7 +114,7 @@ const ChiangMaiMap = () => {
 
   return (
     <div className="map-container">
-      <h1 className="map-title">สภาพอากาศจังหวัดเชียงใหม่</h1>
+      <h1 className="map-title ">แผนที่สภาพอากาศจังหวัดเชียงใหม่</h1>
 
       <button 
         className="reset-button"

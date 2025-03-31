@@ -191,7 +191,7 @@ class PM25Page extends React.Component {
         </div>
 
         {/* Forecast Section */}
-        <h2 className="text-2xl font-bold text-gray-800 mb-6 text-start">
+        <h2 className="text-2xl font-bold text-gray-800 mb-6 text-start font-custom">
           📅 พยากรณ์ 7 วันข้างหน้า
         </h2>
         {pm25Data.data.forecast && (

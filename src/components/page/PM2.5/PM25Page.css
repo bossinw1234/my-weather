@@ -1,11 +1,14 @@
 /* PM25Page.css */
-
+.font-custom {
+  font-family: "Mitr", sans-serif;
+}
 /* ==================== Layout & Containers ==================== */
 .pm25-container {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 20px;
+  font-family: "Mitr", sans-serif;
 }
 
 .pm25-card {
